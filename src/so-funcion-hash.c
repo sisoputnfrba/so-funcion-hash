@@ -26,7 +26,7 @@ context(testsFunciones) {
 			}
 			free(overflow);
 		}end
-		it("test calcularPosicion me da la posicion correcta"){
+		it("test calcularPosicion me da la posicion correcta"){//aca va cada test( o asercion)
 			int pid=5;
 			int pagina=5;
 			int posicion_candidata = calcularPosicion(pid,pagina);

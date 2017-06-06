@@ -1,12 +1,7 @@
-/*
- * funciones_hash.c
- *
- *  Created on: 4/6/2017
- *      Author: utnso
- */
-
 #include "funciones.h"
 
+
+/* Función Hash */
 unsigned int calcularPosicion(int pid, int num_pagina) {
 	char str1[20];
 	char str2[20];
@@ -17,39 +12,48 @@ unsigned int calcularPosicion(int pid, int num_pagina) {
 	return indice;
 }
 
-//En caso de colision, busca el siguiente indice en el vector de overflow.
+/* Inicialización vector overflow. Cada posición tiene una lista enlazada que guarda números de frames.
+ * Se llenará a medida que haya colisiones correspondientes a esa posición del vector. */
+void inicializarOverflow(int cantidad_de_marcos) {
+	overflow = malloc(sizeof(t_list*) * cantidad_de_marcos);
+	int i;
+	for (i = 0; i < CANTIDAD_DE_MARCOS; ++i) { /* Una lista por frame */
+		overflow[i] = list_create();
+	}
+}
+
+/* En caso de colisión, busca el siguiente frame en el vector de overflow.
+ * Retorna el número de frame donde se haya la página. */
 int buscarEnOverflow(int indice, int pid, int pagina) {
 	int i = 0;
 	for (i = 0; i < list_size(overflow[indice]); i++) {
-		//Aca hay que evaluar una condicion para fijarse que en el indice que devuelve el vector de overflow
-		//esta la pagina correcta
-		if (true) {
+		if (esPaginaCorrecta(list_get(overflow[indice], i), pid, pagina)) {
 			return list_get(overflow[indice], i);
 		}
 	}
 }
 
-void inicializarOverflow(int cantidadDeMarcos) {
-	overflow = malloc(sizeof(t_list*) * cantidadDeMarcos);
-	int i;
-	for (i = 0; i < CANTIDAD_DE_MARCOS; ++i) {
-		overflow[i] = list_create();
-	}
-}
-void addSiguienteEnOverflow(int pos_inicial, int nro_frame) {
+/* Agrega una entrada al vector de overflow */
+void agregarSiguienteEnOverflow(int pos_inicial, int nro_frame) {
 	list_add(overflow[pos_inicial], nro_frame);
 }
 
-void deleteEnOverflow(int pos_inicial, int frame) {
+/* Elimina un frame de la lista de overflow perteneciente a una determinada posición */
+void borrarDeOverflow(int posicion, int frame) {
 	int i = 0;
 	int index_frame;
 
-	//busco el indice del frame en la lista enlazada del overflow
-	for (i = 0; i < list_size(overflow[pos_inicial]); i++) {
-		if (frame == list_get(overflow[pos_inicial], i)) {
+	for (i = 0; i < list_size(overflow[posicion]); i++) {
+		if (frame == (int) list_get(overflow[posicion], i)) {
 			index_frame = i;
-			i = list_size(overflow[pos_inicial]);
+			i = list_size(overflow[posicion]);
 		}
 	}
-	list_remove(overflow[pos_inicial], index_frame);
+
+	list_remove(overflow[posicion], index_frame);
+}
+
+/* A implementar por el alumno */
+int esPaginaCorrecta(int pos_candidata, int pid, int pagina) {
+	return 1;
 }

@@ -23,7 +23,7 @@ context(example) {
 			int posicion_candidata = calcularPosicion(pid,pagina);
 			should_int(posicion_candidata) be equal to (5);
 		}end
-		it("si ") {
+		it("test calcularPosicion genera una colision entonces agrego al vector de Overflow un frame libre ") {
 			int pid=5;
 			int pagina=5;
 			//Obtengo el numero de frame candidato con la funcion hash
@@ -39,7 +39,7 @@ context(example) {
 			//list_get trabaja por indice
 			should_int(list_get(overflow[posicion_candidata],0)) be equal to(3);
 		}end
-		it("test buscar en overflow") {
+		it("test busco en overflow el frame que corresponde al detectar una colision") {
 			//asumimos que la posicion candidata 2 ya estaba tomada
 			int pos_candidata = 2;
 			agregarSiguienteEnOverflow(pos_candidata,3);
@@ -58,7 +58,7 @@ context(example) {
 			}
 			should_int(pos_final) be equal to (3);
 		}end
-		it("test delete en overflow") {
+		it("test para finalizar un programa, se deben borrar todas las entradas correspondientes del vector de overflow") {
 			int pos_candidata = 4;
 			agregarSiguienteEnOverflow(pos_candidata,0);
 			agregarSiguienteEnOverflow(pos_candidata,1);

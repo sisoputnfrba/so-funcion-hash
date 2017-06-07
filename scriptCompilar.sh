@@ -1,14 +1,13 @@
-
 #!/bin/sh
 
-cd /../../so-funcion-hash/cspec
+cd cspec
 
 make
 sudo make install
 
 echo "Cspec instalado"
 
-cd /../../so-funcion-hash/
+cd .. 
 
 sudo make all
 

@@ -1,4 +1,4 @@
-# Funcion Hash
+### Funcion Hash
 
 Ejemplo de funcion hash para obtener el indice de la tabla de paginas invertidas correspondiente al TP1C2017 ESTheR
 

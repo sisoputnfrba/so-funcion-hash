@@ -60,7 +60,7 @@ context(example) {
 				pos_final = pos_candidata; /* Por esta rama entraría si la función hash devuelve la posición donde se encuentra la página.  */
 			}
 			else {
-				pos_final = buscarEnOverflow(pos_colision,pid,pagina);
+				pos_final = buscarEnOverflow(pos_candidata,pid,pagina);
 			}
 			should_int(pos_final) be equal to (3);
 		}end

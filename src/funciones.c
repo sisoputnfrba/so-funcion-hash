@@ -23,7 +23,7 @@ void inicializarOverflow(int cantidad_de_marcos) {
 }
 
 /* En caso de colisión, busca el siguiente frame en el vector de overflow.
- * Retorna el número de frame donde se haya la página. */
+ * Retorna el número de frame donde se encuentra la página. */
 int buscarEnOverflow(int indice, int pid, int pagina) {
 	int i = 0;
 	for (i = 0; i < list_size(overflow[indice]); i++) {
@@ -33,12 +33,12 @@ int buscarEnOverflow(int indice, int pid, int pagina) {
 	}
 }
 
-/* Agrega una entrada al vector de overflow */
+/* Agrega una entrada a la lista enlazada correspondiente a una posición del vector de overflow */
 void agregarSiguienteEnOverflow(int pos_inicial, int nro_frame) {
 	list_add(overflow[pos_inicial], nro_frame);
 }
 
-/* Elimina un frame de la lista de overflow perteneciente a una determinada posición */
+/* Elimina un frame de la lista enlazada correspondiente a una determinada posición del vector de overflow  */
 void borrarDeOverflow(int posicion, int frame) {
 	int i = 0;
 	int index_frame;
@@ -53,7 +53,7 @@ void borrarDeOverflow(int posicion, int frame) {
 	list_remove(overflow[posicion], index_frame);
 }
 
-/* A implementar por el alumno */
+/* A implementar por el alumno. Devuelve 1 a fin de cumplir con la condición requerida en la llamada a la función */
 int esPaginaCorrecta(int pos_candidata, int pid, int pagina) {
 	return 1;
 }

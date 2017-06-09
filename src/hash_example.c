@@ -16,71 +16,81 @@ context(example) {
 			}
 			free(overflow);
 		}end
-		it("test al calcular posicion, devuelve la posicion correcta") {
+		it("test-case: buscar pagina. La posicion calculada efectivamente contiene la pagina buscada") {
 			int pid=5;
 			int pagina=5;
+			
 			/* Obtengo el numero de frame candidato con la función hash. */
 			int posicion_candidata = calcularPosicion(pid,pagina);
-			/* Se debe verificar que en esa posicion se encuentre la pagina buscada. */
+			
 			should_int(posicion_candidata) be equal to (5);
+			
+			/* A desarrollar por el grupo: verificar que el frame efectivamente contiene la pagina buscada */
+			
 		}end
-		it("test al calcular posicion genera una colision, entonces agrega al vector de overflow el frame donde se aloja la pagina") {
-			int pid=5;
-			int pagina=5;
+		it("test-case: cargar_pagina.  La posicion calculada ya contiene otra pagina") {
+			int pid = 5;
+			int pagina = 5;
 			/* Obtengo el numero de frame candidato con la función hash. */
 			int posicion_candidata = calcularPosicion(pid,pagina);
-			int pid_colision=10;
-			int pagina_colision=5;
-			int posicion_candidata_colision = calcularPosicion(pid_colision,pagina_colision);
-			/* Se debe verificar si la posicion tiene la página buscada. En este caso la posicion previamente fue ocupada por otra página. */
-			if(posicion_candidata==posicion_candidata_colision) {
-				/* Se busca un frame libre en la memoria. */
-				int frame_libre=3;
-				/* Al haber colisión, se actualiza el vector de overflow. */
+			
+			// valor hardcodeado. Deberia provenir de una funcion tipo esta_libre_el_frame(posicion_candidata) a desarrollar por el alumno
+			int esta_libre_el_frame = 0; 
+			
+			if(!esta_libre_el_frame) { 
+				int frame_libre = 3; /* valor hardcodeado. Deberia provenir de alguna funcion tipo buscarFrameLibre(); */
+
 				agregarSiguienteEnOverflow(posicion_candidata,frame_libre);
 			}
 			should_int(list_get(overflow[posicion_candidata],0)) be equal to(3);
 		}end
-		it("test al calcular posicion, si hay una colision, busca en el vector de overflow") {
-			int pid=10;
-			int pagina=2;
-			int pos_candidata=calcularPosicion(pid,pagina);
-			/* En pos_candidata estaba cargada otra página. 
-			* Hay una colisión. Entonces se busca un frame libre y se agrega esa posición al vector de overflow. 
-			*/
-			agregarSiguienteEnOverflow(pos_candidata,3);
+		it("test-case:  buscar pagina. La posicion calculada no contiene la pagina que se esta buscando") {
+			int pid = 10;
+			int pagina = 2;
+
+			int pos_candidata = calcularPosicion(pid,pagina);
 			
-			/* pos_final es la posición donde se encuentra la página */
-			int pos_final;
+			/* Asumimos que en pos_candidata habia otra pagina, y por lo tanto debe agregarse en la zona de overflow */
+			agregarSiguienteEnOverflow(pos_candidata, 3); // se hardcodea la eleccion del frame 3
 			
-			/* En la condición del if se debe preguntar si en pos_candidata se encuentra la página buscada (pid 10, página 2).
-			* Como de antemano sabemos que no se encuentra en esa posición, forzamos el false para que vaya a buscar en el vector de overflow.
-			*/ 
-			if(0) {
-				pos_final = pos_candidata; /* Por esta rama entraría si la función hash devuelve la posición donde se encuentra la página.  */
+			/* Asumimos que al verificar el contenido del frame, la pagina ubicada en pos_candidata no es la deseada */
+			int es_pagina_buscada = 0; /* valor hardcodeado. Deberia provenir de alguna funcion tipo es_pagina_buscada(pos_candidata, pid, pagina) a desarrollar por el grupo */
+			
+			// Inicio del caso de uso
+			
+			int pos_definitiva;
+			
+			if(es_pagina_buscada) {
+				pos_definitiva = pos_candidata; /* Por esta rama entraría si la función hash devuelve la posición donde se encuentra la página.  */
 			}
 			else {
-				pos_final = buscarEnOverflow(pos_candidata,pid,pagina);
+				pos_definitiva = buscarEnOverflow(pos_candidata,pid,pagina);
 			}
-			should_int(pos_final) be equal to (3);
+			should_int(pos_definitiva) be equal to (3);
 		}end
-		it("test al finalizar un programa, se deben borrar todas las entradas correspondientes al proceso del vector de overflow") {
-			int pos_candidata = 4;
-			agregarSiguienteEnOverflow(pos_candidata,0);
-			agregarSiguienteEnOverflow(pos_candidata,1);
-			agregarSiguienteEnOverflow(pos_candidata,2);
-
+		it("test-case: liberar paginas al finalizar proceso") {
+			// Asumimos que todas las paginas de un proceso colisionaron en el mismo frame nro 4
+			int pos_candidata = 4; 
+			agregarSiguienteEnOverflow(pos_candidata, 0);
+			agregarSiguienteEnOverflow(pos_candidata, 1);
+			agregarSiguienteEnOverflow(pos_candidata, 2);
+                        int pid = 10;
+		
+			// Inicio del caso de uso
+			
 			int i;
 			/* Se debe buscar en todas las entradas de la tabla de páginas. */
-			for(i=0;i<3;i++) {
-				/* En la condición del if se debe evaluar si la entrada tiene una página correspondiente al proceso que se desea finalizar. */
-				if(true) {
-					int frame=i;
-					int seAgregoEnOverflow = frame!=calcularPosicion(10,4);
+			int total_frames_memoria = 3;
+			for(i = 0; i < total_frames_memoria; i++) {
+				int frame_contiene_pagina_del_proceso = 1; // valor hardcodeado. A desarrollar por el grupo
+				if(frame_contiene_pagina_del_proceso) {
+					int frame = i;
+					int nro_pagina_encontrado = 4; // valor hardcodeado. Se debe obtener de la estructura apropiada
+					int seAgregoEnOverflow = frame != calcularPosicion(pid,nro_pagina_encontrado);
 					if(seAgregoEnOverflow) {
-						borrarDeOverflow(calcularPosicion(10,4),frame);
+						borrarDeOverflow(calcularPosicion(pid,nro_pagina_encontrado),frame);
 					}
-					/* Luego se debe liberar el frame. */
+					/* Luego se debe liberar el frame. A desarrollar por el grupo */
 				}
 			}
 
